@@ -1,0 +1,11 @@
+{
+  "title": "Tutorial Berkuliah",
+  "root": true,
+  "pages": [
+    "---Mulai di Sini---",
+    "index",
+    "informasi-resmi",
+    "---Sistem Akademik---",
+    "akademik"
+  ]
+}
