@@ -1,141 +1,299 @@
 # Tutorial Berkuliah
 
-Aplikasi dokumentasi dan panduan perkuliahan untuk mahasiswa **Institut Teknologi Kalimantan** yang dibangun menggunakan **Next.js** dan **Fumadocs**.
+Panduan perkuliahan untuk mahasiswa **Institut Teknologi Kalimantan (ITK)** — ditulis dengan gaya kakak tingkat: santai, jujur, dan to the point.
+
+Dibangun dengan **Next.js**, **Fumadocs**, dan **Bun**.
 
 ---
 
-## Memulai (Quick Start)
+## Daftar Isi
 
-Jalankan server pengembangan lokal:
+- [Tech Stack](#tech-stack)
+- [Prasyarat](#prasyarat)
+- [Cara Menjalankan](#cara-menjalankan)
+- [Script yang Tersedia](#script-yang-tersedia)
+- [Struktur Proyek](#struktur-proyek)
+- [Cara Menambah / Mengedit Artikel](#cara-menambah--mengedit-artikel)
+- [Aturan Penulisan](#aturan-penulisan)
+- [Alur Kontribusi (Pull Request)](#alur-kontribusi-pull-request)
+- [Troubleshooting](#troubleshooting)
+
+---
+
+## Tech Stack
+
+| Teknologi | Kegunaan |
+| --- | --- |
+| [Next.js 16](https://nextjs.org/) | Framework React + rendering dokumentasi |
+| [Fumadocs](https://fumadocs.dev/) | Engine dokumentasi (sidebar, search, MDX) |
+| [Tailwind CSS 4](https://tailwindcss.com/) | Styling |
+| [Biome](https://biomejs.dev/) | Linter + formatter |
+| [Bun](https://bun.sh/) | Package manager & runtime (satu-satunya yang dipakai) |
+
+---
+
+## Prasyarat
+
+- **Git**
+- **Bun ≥ 1.3.14** — cek dengan `bun --version`
+- **Node.js** (dibutuhkan Next.js di balik layar; versi LTS terbaru disarankan)
+
+> Proyek ini memakai `bun` secara eksklusif (`packageManager: bun@1.3.14` di `package.json`).
+> Jangan install dengan `npm`, `pnpm`, atau `yarn` agar lockfile tidak tercampur.
+> Satu-satunya lockfile yang berlaku adalah `bun.lock`.
+
+---
+
+## Cara Menjalankan
 
 ```bash
+# 1. Clone repo
+git clone https://github.com/Research-Technology-HMIF-ITK/tutorial-berkuliah.git
+cd tutorial-berkuliah
+
+# 2. Install dependensi
 bun install
+
+# 3. Jalankan server pengembangan
 bun dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000) (atau port 3001) di browser Anda untuk melihat situs. Halaman dokumentasi berada di rute `/docs`.
+Buka di browser:
 
----
+- Landing page: [http://localhost:3000](http://localhost:3000)
+- Dokumentasi: [http://localhost:3000/docs](http://localhost:3000/docs)
 
-## Panduan Menulis & Mengatur Konten (Fumadocs)
+Build produksi untuk memastikan tidak ada yang rusak sebelum push:
 
-Semua konten tulisan dan dokumentasi disimpan di dalam folder `content/docs/`.
-
-### 1. Struktur Folder `content/docs/`
-
-```text
-content/docs/
-├── meta.json                    <-- 1. Pengatur Menu Utama / Sidebar Root
-├── index.mdx                    <-- 2. Halaman Beranda Dokumen (/docs)
-└── pengenalan-maba/             <-- 3. Folder Kategori Bab (/docs/pengenalan-maba)
-    ├── meta.json                <-- 4. Pengatur Urutan Menu Sub-Folder Ini
-    ├── index.mdx                <-- Halaman Utama Kategori
-    ├── sistem-akademik.mdx      <-- Halaman Sub-Bab (sistem-akademik)
-    └── kehidupan-kampus.mdx     <-- Halaman Sub-Bab (kehidupan-kampus)
+```bash
+bun run build
+bun start   # menjalankan hasil build secara lokal
 ```
 
 ---
 
-### 2. Fungsi `meta.json` (Pengatur Sidebar)
+## Script yang Tersedia
 
-`meta.json` bertindak sebagai **Daftar Isi / Pengatur Sidebar**. Tanpa file ini, Fumadocs akan mengurutkan halaman berdasarkan abjad secara otomatis. Dengan `meta.json`, Anda dapat menentukan **judul bab** dan **urutan halaman** yang tampil di menu samping.
+| Perintah | Kegunaan |
+| --- | --- |
+| `bun dev` | Menjalankan server pengembangan |
+| `bun run build` | Build produksi (wajib lolos sebelum PR) |
+| `bun start` | Menjalankan hasil `build` secara lokal |
+| `bun run types:check` | Cek tipe TypeScript (`next typegen && tsc --noEmit`) |
+| `bun run lint` | Cek lint + format dengan Biome |
+| `bun run format` | Format otomatis dengan Biome |
 
-#### Contoh `content/docs/meta.json` (Root):
+Checklist sebelum push:
+
+```bash
+bun run build && bun run types:check && bun run lint
+```
+
+---
+
+## Struktur Proyek
+
+```text
+.
+├── app/                    # Routing Next.js (layout, halaman docs, API search)
+│   ├── layout.tsx          # Root layout + provider Fumadocs
+│   └── (docs)/             # Layout & renderer halaman dokumentasi
+├── content/
+│   └── docs/               # ← SEMUA KONTEN ARTIKEL ADA DI SINI
+│       ├── meta.json       # Sidebar root (daftar section)
+│       ├── index.mdx       # Halaman pembuka /docs
+│       ├── Akademik/       # Section: FRS, SIAKAD, jadwal, SIMKUR, layanan fakultas
+│       ├── SIKAP/          # Section: SK2PM / SIKAP
+│       ├── LMS/            # Section: LMS kuliah.itk.ac.id
+│       └── Survival-Kit/   # Section: Google Calendar, Notion, Obsidian, dsb.
+├── lib/                    # Konfigurasi source Fumadocs (source.ts, layout, cn)
+├── public/                # Aset gambar (diakses sebagai /nama-file.webp)
+├── WRITTING_STYLE.md       # Panduan gaya penulisan (wajib dibaca kontributor konten)
+└── package.json            # Dependensi + script (packageManager: bun)
+```
+
+Setiap folder section berisi `meta.json` (pengatur sidebar section tersebut) dan file-file `.mdx` (artikel).
+
+---
+
+## Cara Menambah / Mengedit Artikel
+
+Semua artikel adalah file `.mdx` di dalam `content/docs/`. Tidak perlu menyentuh kode React untuk menambah artikel.
+
+### 1. Buat file baru dengan nama yang benar
+
+Nama file = URL artikel. Aturannya:
+
+- Huruf kecil semua
+- Kata dipisah `-` (bukan `_` atau spasi)
+- Tanpa prefix angka, deskriptif 2–4 kata
+
+```text
+Baik: content/docs/Akademik/frs.mdx
+Baik: content/docs/Akademik/jadwal-perkuliahan.mdx
+Buruk: content/docs/Akademik/FRS.mdx
+Buruk: content/docs/Akademik/01_jadwal.mdx
+```
+
+### 2. Isi frontmatter + konten
+
+Setiap artikel wajib diawali frontmatter `title` dan `description`:
+
+```mdx
+---
+title: "Formulir Rencana Studi (FRS)"
+description: Kenalan dengan FRS, SKS, dan cara mengisi rencana studi di Gerbang ITK.
+---
+
+Paragraf pembuka di sini...
+
+## Heading Bagian
+
+Isi artikel...
+```
+
+Aturan frontmatter:
+
+- `title` singkat dan mudah dicari (dipakai sidebar, bukan tempat hook/clickbait)
+- `description` satu kalimat jelas tentang isi artikel
+
+### 3. Daftarkan ke sidebar (jika perlu)
+
+- **Artikel baru di dalam section yang `meta.json`-nya berisi `"..."`** (misal `Akademik/`) → otomatis muncul di sidebar, tidak perlu konfigurasi tambahan.
+- **Section/folder baru** → daftarkan manual di `content/docs/meta.json`:
+
 ```json
 {
   "title": "Tutorial Berkuliah",
   "root": true,
   "pages": [
-    "---Pengenalan---",
+    "---Mulai di Sini---",
     "index",
-    "---Panduan Maba ITK---",
-    "pengenalan-maba"
+    "informasi-resmi",
+    "---Sistem Akademik---",
+    "Akademik",
+    "SIKAP",
+    "LMS",
+    "---Tips & Tricks---",
+    "Survival-Kit"
   ]
 }
 ```
 
-#### Contoh `content/docs/pengenalan-maba/meta.json` (Sub-Folder):
-```json
-{
-  "title": "Pengenalan Maba ITK",
-  "pages": [
-    "index",
-    "sistem-akademik",
-    "kehidupan-kampus"
-  ]
-}
-```
-> **Catatan:** Cukup tuliskan nama file tanpa ekstensi `.mdx` (contoh: tulis `"sistem-akademik"`, bukan `"sistem-akademik.mdx"`). Untuk membuat judul pemisah di sidebar, gunakan format `"---Judul Pemisah---"`.
+Tulis nama file/folder tanpa ekstensi `.mdx`. Format `"---Judul---"` membuat judul pemisah di sidebar.
 
----
+### 4. Tambahkan gambar (jika perlu)
 
-### 3. File Structure `.mdx`
-
-File `.mdx` terdiri dari 2 bagian utama: **Frontmatter** (metadata paling atas) dan **Body Konten**.
+1. Simpan gambar di `public/`, misal `public/Pengisian_FRS_1.webp`
+2. Referensikan dengan path absolut + alt text deskriptif:
 
 ```mdx
+![Halaman login Gerbang ITK](/Pengisian_FRS_1.webp)
+```
+
+Alt text wajib deskriptif (bukan `![Steps]` atau `![gambar]`).
+
+### 5. Pakai komponen Callout untuk tips
+
+Jangan pakai blockquote (`>`) untuk tips/catatan. Pakai komponen `<Callout>` (tersedia global, tanpa import):
+
+```mdx
+<Callout title="Tips Praktis" type="info">
+
+Isi tips di sini.
+
+</Callout>
+```
+
+| Tipe | Kegunaan |
+| --- | --- |
+| `info` | Info penting, syarat wajib, tips praktis |
+| `warn` | Peringatan yang bisa bikin gagal (batas SKS, salah isi data) |
+| `success` | Status berhasil / validasi |
+
+> Selalu beri baris kosong setelah tag pembuka dan sebelum tag penutup agar ter-render benar.
+
 ---
-title: Judul Halaman                <-- FRONTMATTER (Wajib di awal file)
-description: Deskripsi singkat bab ini
+
+## Aturan Penulisan
+
+Panduan lengkap ada di [`WRITTING_STYLE.md`](./WRITTING_STYLE.md) — baca sebelum menulis. Ringkasannya:
+
+1. **Persona:** kakak tingkat yang asik — pakai `kita/kalian/teman-teman/aku/kamu`. Dilarang `Anda/pembaca`, `gue/lu`, dan emoji.
+2. **Gaya bahasa:** mengalir, tidak baku, kalimat pendek. Langsung ke intinya, jujur soal kekurangan sistem, cerita pengalaman pribadi.
+3. **Judul frontmatter** singkat untuk sidebar; hook catchy hanya di paragraf pembuka, variasikan tiap artikel.
+4. **Heading tutorial** memakai format `### Langkah N: Judul Langkah`. Dilarang prefix `Bagian 1`, `Bagian 2`.
+5. **Separator `---`** hanya antar bagian besar, bukan antar langkah.
+6. **Contoh artikel acuan:** `content/docs/Akademik/frs.mdx`.
+
+Contoh pola buka yang natural (jangan diulang antar artikel):
+
+- *"FRS itu daftar mata kuliah yang mau kita ambil dalam satu semester. Udah, intinya itu doang."*
+- *"Gerbang, SIAKAD, SIMKUR, SIKAP. Baru minggu pertama, telinga sudah penuh singkatan."*
+
 ---
 
-# Judul Utama Halaman (H1)          <-- BODY KONTEN (Markdown & MDX)
+## Alur Kontribusi (Pull Request)
 
-Ini adalah paragraf biasa. Anda dapat menulis teks **tebal** atau *miring*.
+Proyek ini memakai fork workflow. Repo utama: `Research-Technology-HMIF-ITK/tutorial-berkuliah`.
 
-## Sub Judul Bab (H2)
+```bash
+# 1. Fork repo utama di GitHub, lalu clone fork kamu
+git clone https://github.com/<username>/tutorial-berkuliah.git
+cd tutorial-berkuliah
 
-- Poin 1
-- Poin 2
+# 2. Buat branch baru dari main
+git checkout -b docs/judul-perubahan
 
-### Komponen Spesial Fumadocs (Opsional)
+# 3. Kerjakan perubahan, lalu pastikan lolos cek
+bun run build && bun run types:check && bun run lint
 
-<Cards>
-  <Card title="Judul Kartu" href="/docs/tujuan" description="Penjelasan singkat" />
-</Cards>
+# 4. Commit + push
+git add -A
+git commit -m "docs(akademik): rewrite jadwal guide in senior-student tone"
+git push origin docs/judul-perubahan
+```
+
+Lalu buka Pull Request dari branch kamu ke `main` repo utama.
+
+### Konvensi commit
+
+Proyek ini mengikuti [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/):
+
+```text
+<type>[scope]: <deskripsi singkat huruf kecil, tanpa titik>
+
+[body opsional: apa yang berubah dan kenapa]
+```
+
+| Type | Dipakai untuk |
+| --- | --- |
+| `docs` | Rewrite / update isi artikel |
+| `feat` | Section atau artikel baru |
+| `fix` | Perbaikan fakta, typo, link rusak |
+| `chore` | Rename file, restrukturisasi tanpa ubah isi |
+
+Contoh:
+
+```text
+docs(akademik): rewrite frs guide with senior-student tone
+feat(survival-kit): add google calendar guide
+fix(akademik): correct ips-to-sks table
+chore(docs): rename numbered folders to clean slugs
 ```
 
 ---
 
-### 4. Langkah-Langkah Menambah Halaman Baru
+## Troubleshooting
 
-Misalkan Anda ingin menambah halaman baru **"Informasi Beasiswa"** di bawah kategori Maba:
-
-1. **Buat file `.mdx` baru:**  
-   `content/docs/pengenalan-maba/beasiswa.mdx`
-2. **Isi konten file:**
-   ```mdx
-   ---
-   title: Informasi Beasiswa ITK
-   description: Daftar beasiswa KIP-K, Djarum, dan Pemprov untuk mahasiswa ITK.
-   ---
-
-   # Beasiswa ITK
-   ...
-   ```
-3. **Daftarkan ke `meta.json`:**  
-   Buka `content/docs/pengenalan-maba/meta.json` dan tambahkan nama file `"beasiswa"` di daftar `pages`:
-   ```json
-   {
-     "title": "Pengenalan Maba ITK",
-     "pages": [
-       "index",
-       "sistem-akademik",
-       "kehidupan-kampus",
-       "beasiswa"
-     ]
-   }
-   ```
-
-Halaman baru akan otomatis muncul di menu navigasi sidebar!
+| Masalah | Solusi |
+| --- | --- |
+| Port 3000 sudah dipakai | Next otomatis pindah ke 3001, atau jalankan `bun dev --port 3002` |
+| `bun install` gagal / lockfile berubah sendiri | Pastikan hanya pakai `bun`. Hapus `node_modules` lalu `bun install` ulang |
+| Halaman docs 404 setelah tambah file | Pastikan file berekstensi `.mdx`, ada frontmatter `title`, dan (untuk section baru) terdaftar di `meta.json` |
+| Gambar tidak muncul | Pastikan file ada di `public/` dan path diawali `/`, misal `/Pengisian_FRS_1.webp` |
+| Callout tidak ter-render | Pastikan ada baris kosong setelah tag pembuka dan sebelum tag penutup |
 
 ---
 
-## Arsitektur Proyek
-
-| Rute / Lokasi | Keterangan |
-| :--- | :--- |
-| `content/docs/` | Semua file `.mdx` dan `meta.json` konten tulisan. |
-| `app/(home)` | Halaman landing page / depan utama aplikasi. |
-| `app/docs` | Layout dan renderer dokumentasi Fumadocs. |
-| `lib/source.ts` | Konfigurasi Loader & Adapter Fumadocs MDX. |
+Ada pertanyaan atau nemu info yang sudah kedaluwarsa? Buka issue atau langsung kirim PR — semua kontribusi dari mahasiswa ITK sangat diterima.
