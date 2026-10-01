@@ -8,15 +8,23 @@ Dibangun dengan **Next.js**, **Fumadocs**, dan **Bun**.
 
 ## Daftar Isi
 
-- [Tech Stack](#tech-stack)
-- [Prasyarat](#prasyarat)
-- [Cara Menjalankan](#cara-menjalankan)
-- [Script yang Tersedia](#script-yang-tersedia)
-- [Struktur Proyek](#struktur-proyek)
-- [Cara Menambah / Mengedit Artikel](#cara-menambah--mengedit-artikel)
-- [Aturan Penulisan](#aturan-penulisan)
-- [Alur Kontribusi (Pull Request)](#alur-kontribusi-pull-request)
-- [Troubleshooting](#troubleshooting)
+- [Tutorial Berkuliah](#tutorial-berkuliah)
+  - [Daftar Isi](#daftar-isi)
+  - [Tech Stack](#tech-stack)
+  - [Prasyarat](#prasyarat)
+  - [Cara Menjalankan](#cara-menjalankan)
+  - [Script yang Tersedia](#script-yang-tersedia)
+  - [Struktur Proyek](#struktur-proyek)
+  - [Cara Menambah / Mengedit Artikel](#cara-menambah--mengedit-artikel)
+    - [1. Buat file baru dengan nama yang benar](#1-buat-file-baru-dengan-nama-yang-benar)
+    - [2. Isi frontmatter + konten](#2-isi-frontmatter--konten)
+    - [3. Daftarkan ke sidebar (jika perlu)](#3-daftarkan-ke-sidebar-jika-perlu)
+    - [4. Tambahkan gambar (jika perlu)](#4-tambahkan-gambar-jika-perlu)
+    - [5. Pakai komponen Callout untuk tips](#5-pakai-komponen-callout-untuk-tips)
+  - [Aturan Penulisan](#aturan-penulisan)
+  - [Alur Kontribusi (Pull Request)](#alur-kontribusi-pull-request)
+    - [Konvensi commit](#konvensi-commit)
+  - [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -217,19 +225,12 @@ Isi tips di sini.
 
 ## Aturan Penulisan
 
-Panduan lengkap ada di [`WRITTING_STYLE.md`](./WRITTING_STYLE.md) — baca sebelum menulis. Ringkasannya:
-
 1. **Persona:** kakak tingkat yang asik — pakai `kita/kalian/teman-teman/aku/kamu`. Dilarang `Anda/pembaca`, `gue/lu`, dan emoji.
 2. **Gaya bahasa:** mengalir, tidak baku, kalimat pendek. Langsung ke intinya, jujur soal kekurangan sistem, cerita pengalaman pribadi.
 3. **Judul frontmatter** singkat untuk sidebar; hook catchy hanya di paragraf pembuka, variasikan tiap artikel.
 4. **Heading tutorial** memakai format `### Langkah N: Judul Langkah`. Dilarang prefix `Bagian 1`, `Bagian 2`.
 5. **Separator `---`** hanya antar bagian besar, bukan antar langkah.
 6. **Contoh artikel acuan:** `content/docs/Akademik/frs.mdx`.
-
-Contoh pola buka yang natural (jangan diulang antar artikel):
-
-- *"FRS itu daftar mata kuliah yang mau kita ambil dalam satu semester. Udah, intinya itu doang."*
-- *"Gerbang, SIAKAD, SIMKUR, SIKAP. Baru minggu pertama, telinga sudah penuh singkatan."*
 
 ---
 
