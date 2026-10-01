@@ -1,7 +1,4 @@
 # Tutorial Berkuliah
-
-Panduan perkuliahan untuk mahasiswa **Institut Teknologi Kalimantan (ITK)** — ditulis dengan gaya kakak tingkat: santai, jujur, dan to the point.
-
 Dibangun dengan **Next.js**, **Fumadocs**, dan **Bun**.
 
 ---
