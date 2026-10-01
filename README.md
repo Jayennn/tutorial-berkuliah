@@ -21,7 +21,6 @@ Dibangun dengan **Next.js**, **Fumadocs**, dan **Bun**.
     - [3. Daftarkan ke sidebar (jika perlu)](#3-daftarkan-ke-sidebar-jika-perlu)
     - [4. Tambahkan gambar (jika perlu)](#4-tambahkan-gambar-jika-perlu)
     - [5. Pakai komponen Callout untuk tips](#5-pakai-komponen-callout-untuk-tips)
-  - [Aturan Penulisan](#aturan-penulisan)
   - [Alur Kontribusi (Pull Request)](#alur-kontribusi-pull-request)
     - [Konvensi commit](#konvensi-commit)
   - [Troubleshooting](#troubleshooting)
@@ -221,18 +220,6 @@ Isi tips di sini.
 
 > Selalu beri baris kosong setelah tag pembuka dan sebelum tag penutup agar ter-render benar.
 
----
-
-## Aturan Penulisan
-
-1. **Persona:** kakak tingkat yang asik — pakai `kita/kalian/teman-teman/aku/kamu`. Dilarang `Anda/pembaca`, `gue/lu`, dan emoji.
-2. **Gaya bahasa:** mengalir, tidak baku, kalimat pendek. Langsung ke intinya, jujur soal kekurangan sistem, cerita pengalaman pribadi.
-3. **Judul frontmatter** singkat untuk sidebar; hook catchy hanya di paragraf pembuka, variasikan tiap artikel.
-4. **Heading tutorial** memakai format `### Langkah N: Judul Langkah`. Dilarang prefix `Bagian 1`, `Bagian 2`.
-5. **Separator `---`** hanya antar bagian besar, bukan antar langkah.
-6. **Contoh artikel acuan:** `content/docs/Akademik/frs.mdx`.
-
----
 
 ## Alur Kontribusi (Pull Request)
 
