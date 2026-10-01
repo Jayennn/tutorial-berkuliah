@@ -17,6 +17,8 @@
 /.pnp
 .pnp.js
 npm-debug.log*
+pnpm-debug.log*
+pnpm-workspace.yaml
 yarn-debug.log*
 yarn-error.log*
 

@@ -9,9 +9,8 @@ Aplikasi dokumentasi dan panduan perkuliahan untuk mahasiswa **Institut Teknolog
 Jalankan server pengembangan lokal:
 
 ```bash
-npm run dev
-# atau
-pnpm dev
+bun install
+bun dev
 ```
 
 Buka [http://localhost:3000](http://localhost:3000) (atau port 3001) di browser Anda untuk melihat situs. Halaman dokumentasi berada di rute `/docs`.

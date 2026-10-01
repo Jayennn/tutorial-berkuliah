@@ -2,6 +2,7 @@
   "name": "tutorial-berkuliah",
   "version": "0.0.17",
   "private": true,
+  "packageManager": "bun@1.3.14",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
